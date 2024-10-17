@@ -190,7 +190,7 @@ if __name__ == "__main__":
   
   serverIp = "127.0.0.1"
   serverPort = 11550
-  user = "user2"
+  user = "user1"
 
   points = 0
 

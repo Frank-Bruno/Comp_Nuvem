@@ -7,11 +7,11 @@ HOST = '127.0.0.1'  # Endereço IP do servidor
 PORT = 11550        # Porta que o servidor vai escutar
 
 # Lista de usuários permitidos
-with open(r".\pta-server\users.txt", 'r') as file:
+with open(r"./pta-server/users.txt", 'r') as file:
     valid_users = [line.strip() for line in file.readlines()]
 
 # Pasta onde estão os arquivos disponíveis
-file_directory = r".\pta-server\files"
+file_directory = r"./pta-server/files"
 
 # Função para lidar com a conexão do cliente
 def handle_client(conn, addr):
@@ -55,16 +55,20 @@ def handle_client(conn, addr):
                 # Comando PEGA - Requisição de arquivo
                 elif command == "PEGA":
                     file_name = parts[2]
+                    #print(file_name)
                     file_path = os.path.join(file_directory, file_name)
                     if os.path.exists(file_path):
+                        print("o arquivo existe")
                         file_size = os.path.getsize(file_path)
                         with open(file_path, "rb") as f:
                             file_data = f.read()
-                        response = f"{client_seq_num} ARQ {file_size}"
+                        print(file_data)
+                        response = f"{client_seq_num} ARQ {file_size} {file_data}"
                         conn.sendall(response.encode())
-                        conn.sendall(file_data)  # Envia o conteúdo do arquivo
+                        #conn.sendall(file_data)  # Envia o conteúdo do arquivo
                         continue  # Pular envio de resposta adicional
                     else:
+                        print("o arquivo não existe")
                         response = f"{client_seq_num} NOK"
                 
                 # Comando TERM - Fechar conexão
